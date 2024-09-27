@@ -1,7 +1,7 @@
 import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import './style.css';
 import { usePagination } from 'src/hooks';
-import Pagination from 'src/components/Pagination';
+import Pagination from 'src/components/pagination';
 import { Customer } from 'src/types';
 import { useSignInUserStore } from 'src/stores';
 import { useCookies } from 'react-cookie';

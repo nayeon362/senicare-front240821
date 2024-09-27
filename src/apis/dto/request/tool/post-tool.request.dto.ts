@@ -1,3 +1,5 @@
+import { NumberLiteralType } from "typescript";
+
 // interface: post tool request Body dto //
 export default interface PostToolRequestDto {
     name: string;

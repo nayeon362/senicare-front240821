@@ -71,6 +71,10 @@ body {
     background-color: var(--gray-color);
 }
 
+.button.error {
+    background-color: var(--error-color);
+}
+
 .disable:hover {
     opacity: 1;
 }
@@ -141,5 +145,5 @@ body {
 }
 
 .icon-button.trash {
-    background-image: url(/public/images/trash-icon.png);
+    background-image:url(/public/images/trash-icon.png);
 }

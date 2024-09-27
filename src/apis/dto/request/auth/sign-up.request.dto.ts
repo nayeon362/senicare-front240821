@@ -1,4 +1,4 @@
-// interface: 회원가입 Request Body Dto //
+// interface: 회원가입 Reuqest Body Dto //
 export default interface SignUpRequestDto {
     name: string;
     userId: string;
@@ -7,5 +7,4 @@ export default interface SignUpRequestDto {
     authNumber: string;
     joinPath: string;
     snsId: string | null;
-    
 }

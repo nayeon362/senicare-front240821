@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent } from 'react';
 import './style.css';
 
 interface Props {
@@ -17,8 +17,8 @@ interface Props {
 export default function InputBox({ 
     label, 
     type, 
-    placeholder,
-    value,
+    placeholder, 
+    value, 
     buttonName,
     message,
     messageError,

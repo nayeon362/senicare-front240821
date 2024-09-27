@@ -2,6 +2,8 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+
+    /* background-color: burlywood; */
 }
 
 .input-box .label {
@@ -10,23 +12,24 @@
     color: var(--gray-color);
 }
 
-.input-box .input-area {
+.input-box .input-area{
     display: flex;
     gap: 10px;
 }
 
-.input-box input {
+/* 아이디와 비밀번호 입력한 값에 대한 작업 */
+.input-box input{
     flex: 1;
 
     background: none;
     border: none;
-    outline: none;
+    outline: none; /* 커서로 클릭했을시 테두리 안생기가 하는것 */
 
-    border: 1px solid rgba(238, 238, 238, 1);
+    border: 1px solid rgba(238, 238, 238,1);
     border-radius: 6px;
     padding: 8px 16px;
 
-    background-color: rgba(255, 255, 255, 1);
+    background-color: rgba(255, 255, 255,1);
 
     font-family: 'Inter', sans-serif;
     font-size: 16px;
@@ -35,20 +38,22 @@
     color: var(--default-color);
 }
 
+/* placeholder에 대한 스타일을 따로 지정해줄 수 있음 */
 input::placeholder {
     color: var(--gray-color);
 }
 
-.input-box .input-button {
+.input-box .input-button{
+    /* background-color: var(--primary-color); */
     border-radius: 6px;
-    padding: 8px 0;
     width: 110px;
+    padding: 8px 0;
 
+    text-align: center;
     font-size: 16px;
     font-weight: 400;
     line-height: 175%;
     color: var(--gray-color);
-    text-align: center;
 }
 
 .input-button.disable {
@@ -66,9 +71,12 @@ input::placeholder {
     cursor: pointer;
 }
 
+
+/* 아이디 및 비번 입력했을시 오류인지 아닌지 나타내주는 박스 */
 .input-box .message {
     margin-top: -4px;
     height: 16px;
+    /* background-color: blue; */
 
     font-size: 13px;
     font-weight: 400;

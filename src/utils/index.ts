@@ -10,7 +10,8 @@ export const calculateAge = (birthString: string) => {
     const today = dayjs();
 
     let age = today.year() - birth.year();
-    if (today.isBefore(birth.add(age, 'year'))) age--;
 
+    if (today.isBefore(birth.add(age, 'year'))) age--;
+    
     return age;
 };

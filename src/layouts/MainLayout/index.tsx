@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import './style.css';
 import { useCookies } from 'react-cookie';
-import { AUTH_ABSOLUTE_PATH, AUTH_PATH, CS_ABSOLUTE_PATH, CS_PATH, HR_ABSOLUTE_PATH, HR_PATH, MM_ABSOLUTE_PATH, MM_PATH, ROOT_ABSOLUTE_PATH } from 'src/constants';
+import { ACCESS_TOKEN, AUTH_ABSOLUTE_PATH, CS_ABSOLUTE_PATH, CS_DETAIL_PATH, CS_PATH, HR_ABSOLUTE_PATH, HR_PATH, MM_ABSOLUTE_PATH, MM_PATH, ROOT_ABSOLUTE_PATH } from 'src/constants';
 
 // component: 로고 컴포넌트 //
 function Logo() {
@@ -28,17 +28,17 @@ function Top() {
     const [cookies, setCookie, removeCookie] = useCookies();
 
     // variable: 경로 이름 //
-    const path =
+    const path = 
         pathname.startsWith(CS_PATH) ? '고객 관리' :
-            pathname.startsWith(MM_PATH) ? '용품 관리' :
-                pathname.startsWith(HR_PATH) ? '인사 관리' : '';
+        pathname.startsWith(MM_PATH) ? '용품 관리' :
+        pathname.startsWith(HR_PATH) ? '인사 관리' : '';
 
     // function: 네비게이터 함수 //
     const navigator = useNavigate();
 
     // event handler: 로그아웃 버튼 클릭 이벤트 처리 //
     const onLogoutButtonClickHandler = () => {
-        removeCookie('accessToken', { path: ROOT_ABSOLUTE_PATH });
+        removeCookie(ACCESS_TOKEN, { path: ROOT_ABSOLUTE_PATH });
         navigator(AUTH_ABSOLUTE_PATH);
     };
 
@@ -58,7 +58,7 @@ function SideNavigation() {
     // state: path 상태 //
     const { pathname } = useLocation();
 
-    // variable: 특정 경로 여부 변수  //
+    // variable: 특정 경로 여부 변수 //
     const isCs = pathname.startsWith(CS_PATH);
     const isMm = pathname.startsWith(MM_PATH);
     const isHr = pathname.startsWith(HR_PATH);
@@ -76,7 +76,7 @@ function SideNavigation() {
         <div id='layout-side-navigation'>
             <div className='navigation'>
                 <div className={`navigation-item ${isCs ? 'active' : ''}`} onClick={() => onItemClickHandler(CS_ABSOLUTE_PATH)}>
-                    <div className={`icon  ${isCs ? 'cs-active-icon' : 'cs-icon'}`}></div>
+                    <div className={`icon ${isCs ? 'cs-active-icon' : 'cs-icon'}`}></div>
                     <div className='item-text'>고객 관리</div>
                 </div>
                 <div className={`navigation-item ${isMm ? 'active' : ''}`} onClick={() => onItemClickHandler(MM_ABSOLUTE_PATH)}>
@@ -104,7 +104,7 @@ export default function MainLayout() {
 
     // effect: 레이아웃 마운트시 로그인 여부 확인 //
     useEffect(() => {
-        // if(!cookies.accessToken) navigator(AUTH_ABSOLUTE_PATH);
+        // if(!cookies[ACCESS_TOKEN]) navigator(AUTH_ABSOLUTE_PATH);
     }, []);
 
     // render: 메인 레이아웃 컴포넌트 렌더링 //
@@ -114,7 +114,7 @@ export default function MainLayout() {
             <Top />
             <SideNavigation />
             <div id='main-wrapper'>
-            <Outlet />
+                <Outlet />
             </div>
         </div>
     );

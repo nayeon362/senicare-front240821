@@ -17,8 +17,9 @@ import HR from './views/HR';
 import HRDetail from './views/HR/Detail';
 import { useSearchParams } from 'react-router-dom';
 import { getSignInRequest } from './apis';
-import { GetSignInResponseDto } from './apis/dto/response/nurse';
+import { access } from 'fs';
 import { ResponseDto } from './apis/dto/response';
+import { GetSignInResponseDto } from './apis/dto/response/nurse';
 import { useSignInUserStore } from './stores';
 
 // component: root path 컴포넌트 //
@@ -97,22 +98,25 @@ export default function Senicare() {
     if (!isSuccessed) {
       alert(message);
       removeCookie(ACCESS_TOKEN, { path: ROOT_PATH });
+      setSignInUser(null);
       navigator(AUTH_ABSOLUTE_PATH);
       return;
     }
 
-    const { userId, name, telNumber } = responseBody as GetSignInResponseDto
+    const { userId, name, telNumber } = responseBody as GetSignInResponseDto;
     setSignInUser({ userId, name, telNumber });
-
   };
 
-  // effect: cookie의 accessToken 값이 변경될 때마다 로그인 유저 정보를 요청하는 함수 //
+  // effect: cookie의 accessToken 값이 변경될 때마다 로그인 유저 정보를 요청하는 함수
   useEffect(() => {
     const accessToken = cookies[ACCESS_TOKEN];
     if (accessToken) {
       getSignInRequest(accessToken).then(getSignInResponse);
+
+    } else {
+      setSignInUser(null);
     }
-    else setSignInUser(null);
+
   }, [cookies[ACCESS_TOKEN]]);
 
   // render: Senicare 컴포넌트 렌더링 //
@@ -123,8 +127,8 @@ export default function Senicare() {
       <Route path={CS_PATH} element={<MainLayout />}>
         <Route index element={<CS />} />
         <Route path={CS_WRITE_PATH} element={<CSWrite />} />
-        <Route path={CS_DETAIL_PATH(':customNumber')} element={<CSDetail />} />
-        <Route path={CS_UPDATE_PATH(':customNumber')} element={<CSUpdate />} />
+        <Route path={CS_DETAIL_PATH(':customerNumber')} element={<CSDetail />} />
+        <Route path={CS_UPDATE_PATH(':customerNumber')} element={<CSUpdate />} />
       </Route>
       <Route path={MM_PATH} element={<MainLayout />}>
         <Route index element={<MM />} />

@@ -8,7 +8,7 @@ import { ResponseDto } from 'src/apis/dto/response';
 import { Tool } from 'src/types';
 import { GetToolListResponseDto, GetToolResponseDto } from 'src/apis/dto/response/tool';
 import { usePagination } from 'src/hooks';
-import Pagination from 'src/components/Pagination';
+import Pagination from 'src/components/pagination';
 
 // interface: 용품 등록 컴포넌트 Properties //
 interface PostBoxProps {
