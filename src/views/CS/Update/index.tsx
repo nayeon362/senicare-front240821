@@ -9,7 +9,7 @@ import { Address, useDaumPostcodePopup } from 'react-daum-postcode';
 import { GetNurseListResponseDto } from 'src/apis/dto/response/nurse';
 import { ResponseDto } from 'src/apis/dto/response';
 import { ACCESS_TOKEN, CS_ABSOLUTE_PATH, CS_DETAIL_ABSOLUTE_PATH } from 'src/constants';
-import { fileUploadRequest, getCustomerRequest, GetNurseListRequest, patchCustomerRequest, postCustomerRequest } from 'src/apis';
+import { fileUploadRequest, getCustomerRequest, getNurseListRequest, patchCustomerRequest, postCustomerRequest } from 'src/apis';
 import PostCustomerRequestDto from 'src/apis/dto/request/customer/post-customer.request.dto';
 import Pagination from 'src/components/pagination';
 import { GetCustomerResponseDto } from 'src/apis/dto/response/customer';
@@ -28,7 +28,7 @@ export default function CSUpdate() {
     const { customerNumber } = useParams();
 
     // state: 이미지 입력 참조 //
-    const imageInputRef = useRef<HTMLInputElement | null>(null);
+    const imageInputRef = useRef<HTMLInputElement|null>(null);
 
     // state: cookie 상태 //
     const [cookies] = useCookies();
@@ -72,15 +72,15 @@ export default function CSUpdate() {
         setLocation(sigungu);
     };
 
-    // function: get customer response 처리 함수 //
+    // function: get customer resposne 처리 함수 //
     const getCustomerResponse = (responseBody: GetCustomerResponseDto | ResponseDto | null) => {
-        const message =
-            !responseBody ? '서버에 문제가 있습니다.' :
-                responseBody.code === 'VF' ? '잘못된 접근입니다.' :
-                    responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-                        responseBody.code === 'NC' ? '존재하지 않는 고객입니다.' :
-                            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
-
+        const message = 
+            !responseBody ? '서버에 문제가 있습니다.' : 
+            responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'NC' ? '존재하지 않는 고객입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+        
         const isSuccessed = responseBody !== null && responseBody.code === 'SU';
         if (!isSuccessed) {
             alert(message);
@@ -96,14 +96,14 @@ export default function CSUpdate() {
         setChargerName(chargerName);
         setAddress(address);
         setLocation(location);
-    }
+    };
 
     // function: get nurse list response 처리 함수 //
     const getNurseListResponse = (responseBody: GetNurseListResponseDto | ResponseDto | null) => {
         const message =
             !responseBody ? '서버에 문제가 있습니다.' :
-                responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-                    responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+            responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
         const isSuccessed = responseBody !== null && responseBody.code === 'SU';
         if (!isSuccessed) {
@@ -118,21 +118,22 @@ export default function CSUpdate() {
 
     // function: post customer response 처리 함수 //
     const patchCustomerResponse = (responseBody: ResponseDto | null) => {
-        const message =
-            !responseBody ? '서버에 문제가 있습니다.' :
-                responseBody.code === 'VF' ? '모두 입력해주세요.' :
-                    responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-                        responseBody.code === 'NC' ? '존재하지 않는 고객입니다.' :
-                            responseBody.code === 'NI' ? '존재하지 않는 요양사입니다.' :
-                                responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+        const message = 
+            !responseBody ? '서버에 문제가 있습니다.' : 
+            responseBody.code === 'VF' ? '모두 입력해주세요.' :
+            responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'NC' ? '존재하지 않는 고객입니다.' :
+            responseBody.code === 'NI' ? '존재하지 않는 요양사입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
         const isSuccessed = responseBody !== null && responseBody.code === 'SU';
         if (!isSuccessed) {
             alert(message);
             return;
         }
+
         if (!customerNumber) return;
-            navigator(CS_DETAIL_ABSOLUTE_PATH(customerNumber));
+        navigator(CS_DETAIL_ABSOLUTE_PATH(customerNumber));
     };
 
     // event handler: 프로필 이미지 클릭 이벤트 처리 //
@@ -253,8 +254,8 @@ export default function CSUpdate() {
 
         const accessToken = cookies[ACCESS_TOKEN];
         if (!accessToken) return;
-        getCustomerRequest(customerNumber, accessToken).then(getCustomerResponse)
-        GetNurseListRequest(accessToken).then(getNurseListResponse);
+        getCustomerRequest(customerNumber, accessToken).then(getCustomerResponse);
+        getNurseListRequest(accessToken).then(getNurseListResponse);
     }, [customerNumber]);
 
     // effect: 모달 오픈 상태가 바뀔 시 스크롤 여부 함수 //
@@ -304,39 +305,39 @@ export default function CSUpdate() {
                 <div className='button second' onClick={onUpdateClickHandler}>수정</div>
             </div>
             {modalOpen &&
-                <div className='modal'>
-                    <div className='modal-box'>
-                        <div className='modal-top'>
-                            <div className='modal-label'>담당자 이름</div>
-                            <div className='modal-input-box'>
-                                <input className='modal-input' value={searchWord} placeholder='이름을 입력하세요.' onChange={onSearchWordChangeHandler} onKeyDown={onSearchWordKeydownHandler} />
-                                <div className='button disable' onClick={onSearchButtonClickHandler}>검색</div>
-                            </div>
-                        </div>
-                        <div className='modal-main'>
-                            <div className='table'>
-                                <div className='th'>
-                                    <div className='td-nurse-id'>ID</div>
-                                    <div className='td-nurse-name'>이름</div>
-                                    <div className='td-nurse-tel-number'>전화번호</div>
-                                </div>
-                                {viewList.map((nurse, index) =>
-                                    <div key={index} className='tr' onClick={() => onNurseSelectHandler(nurse)}>
-                                        <div className='td-nurse-id'>{nurse.nurseId}</div>
-                                        <div className='td-nurse-name'>{nurse.name}</div>
-                                        <div className='td-nurse-tel-number'>{nurse.telNumber}</div>
-                                    </div>
-                                )}
-                            </div>
-                            <div className='modal-pagination-box'>
-                                <Pagination currentPage={currentPage} {...paginationProps} />
-                            </div>
-                        </div>
-                        <div className='modal-bottom'>
-                            <div className='button disable' onClick={onModelOpenHandler}>닫기</div>
+            <div className='modal'>
+                <div className='modal-box'>
+                    <div className='modal-top'>
+                        <div className='modal-label'>담당자 이름</div>
+                        <div className='modal-input-box'>
+                            <input className='modal-input' value={searchWord} placeholder='이름을 입력하세요.' onChange={onSearchWordChangeHandler} onKeyDown={onSearchWordKeydownHandler} />
+                            <div className='button disable' onClick={onSearchButtonClickHandler}>검색</div>
                         </div>
                     </div>
+                    <div className='modal-main'>
+                        <div className='table'>
+                            <div className='th'>
+                                <div className='td-nurse-id'>ID</div>
+                                <div className='td-nurse-name'>이름</div>
+                                <div className='td-nurse-tel-number'>전화번호</div>
+                            </div>
+                            {viewList.map((nurse, index) => 
+                            <div key={index} className='tr' onClick={() => onNurseSelectHandler(nurse)}>
+                                <div className='td-nurse-id'>{nurse.nurseId}</div>
+                                <div className='td-nurse-name'>{nurse.name}</div>
+                                <div className='td-nurse-tel-number'>{nurse.telNumber}</div>
+                            </div>
+                            )}
+                        </div>
+                        <div className='modal-pagination-box'>
+                            <Pagination currentPage={currentPage} {...paginationProps} />
+                        </div>
+                    </div>
+                    <div className='modal-bottom'>
+                        <div className='button disable' onClick={onModelOpenHandler}>닫기</div>
+                    </div>
                 </div>
+            </div>
             }
         </div>
     )

@@ -147,7 +147,7 @@ export default function CS() {
     // event handler: 등록 버튼 클릭 이벤트 처리 함수 //
     const onPostButtonClickHandler = () => {
         navigator(CS_WRITE_ABSOLUTE_PATH);
-    }
+    };
 
     // event handler: 검색어 변경 이벤트 처리 함수 //
     const onSearchWordChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
