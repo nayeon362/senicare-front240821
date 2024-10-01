@@ -45,7 +45,7 @@ export default function CSDetail() {
     // state: 선택한 용품 상태 //
     const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
     // state: 관리 기록 내용 상태 //
-    const [recordContents, setRecordContents] = useState<string>('');
+    const [recordContent, setRecordContent] = useState<string>('');
     // state: 사용 용품 개수 상태 //
     const [usedToolCount, setUsedToolCount] = useState<string>('');
 
@@ -172,7 +172,7 @@ export default function CSDetail() {
     // event handler: 관리 기록 내용 변경 이벤트 처리 //
     const onRecordContentsChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
-        setRecordContents(value);
+        setRecordContent(value);
     };
 
     // event handler: 사용 용품 개수 변경 이벤트 처리 //
@@ -205,7 +205,7 @@ export default function CSDetail() {
             return;
         }
 
-        if (!recordContents) {
+        if (!recordContent) {
             alert('내용을 입력하세요.');
             return;
         }
@@ -221,7 +221,7 @@ export default function CSDetail() {
         if (!accessToken) return;
 
         const requestBody: PostCareRecordRequestDto = {
-            contents: recordContents,
+            contents: recordContent,
             usedToolNumber: selectedTool ? selectedTool.toolNumber : null,
             count: selectedTool ? Number(usedToolCount) : null
         };
@@ -322,7 +322,7 @@ export default function CSDetail() {
                     <div className='record-write-content-box'>
                         <div className='input-box' style={{ flex: 1 }}>
                             <div className='label'>내용</div>
-                            <input className='input' value={recordContents} placeholder='내용을 입력하세요.' onChange={onRecordContentsChangeHandler} />
+                            <input className='input' value={recordContent} placeholder='내용을 입력하세요.' onChange={onRecordContentsChangeHandler} />
                         </div>
                         <div className='button disable' onClick={onRecordButtonClickHandler}>기록</div>
                     </div>
